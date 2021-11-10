@@ -3,11 +3,19 @@ var solo2;
 var trex, trex_correndo, edges;
 var solo, imagen_do_solo;
 var nuvens, nuvens2;
+var obstaculo, obstaculo1, obstaculo2, obstaculo3, obstaculo4, obstaculo5, obstaculo6;
+var score;
 function preload(){
 
   trex_correndo = loadAnimation("trex1.png", "trex3.png", "trex4.png");
   imagensolo = loadImage("ground2.png");
   nuvens2 = loadImage("cloud.png");
+  obstaculo1 =loadImage ("obstacle1.png");
+  obstaculo2 =loadImage ("obstacle2.png");
+  obstaculo3 =loadImage ("obstacle3.png");
+  obstaculo4 =loadImage ("obstacle4.png");
+  obstaculo5 =loadImage ("obstacle5.png");
+  obstaculo6 =loadImage ("obstacle6.png");
 }
 
 function setup(){
@@ -27,12 +35,14 @@ function setup(){
 
   var rand = Math.round(random(10,60));
 
+  score = 0;
 }
 
 function draw(){
   background(180);
 
-  
+  text("SCORE:" +score,500,50);
+  score=score+Math.round(frameCount/120);
 
   if(keyDown("space") && trex.y >160){
     trex.velocityY = -12;
@@ -47,6 +57,8 @@ function draw(){
 
   gerarNuvens();
 
+  gerarobstaculos();
+
   drawSprites();
 }
 
@@ -60,7 +72,32 @@ nuvens.scale =0.75;
 nuvens.y = random(10,60);
 nuvens.depth = trex.depth;
 trex.depth = trex.depth +1;
-console.log (trex.depth);
-console.log (nuvens.depth);
+nuvens.lifetime = 225;
+}
+}
+
+function gerarobstaculos(){
+if (frameCount%80===0){
+obstaculo = createSprite(600,165,10,40);
+obstaculo.velocityX = -8
+
+var sorteio =Math.round(random(1,6));
+switch (sorteio){
+  case 1: obstaculo.addImage(obstaculo1);
+  break;
+  case 2: obstaculo.addImage(obstaculo2);
+  break;
+  case 3: obstaculo.addImage(obstaculo3);
+  break;
+  case 4: obstaculo.addImage(obstaculo4);
+  break;
+  case 5: obstaculo.addImage(obstaculo5);
+  break;
+  case 6: obstaculo.addImage(obstaculo6);
+  break;
+  default: break;
+}
+obstaculo.scale = 0.5;
+obstaculo.lifetime = 225;
 }
 }
