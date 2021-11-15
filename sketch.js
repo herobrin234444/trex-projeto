@@ -1,4 +1,8 @@
-
+var JOGAR = 1;
+var ENCERRAR = 0;
+var estadodejogo = JOGAR;
+var grupodenuvens;
+var grupodeobstaculos;
 var solo2;
 var trex, trex_correndo, edges;
 var solo, imagen_do_solo;
@@ -21,12 +25,15 @@ function preload(){
 function setup(){
   createCanvas(600,200)
   
+  grupodenuvens = new Group();
+  grupodeobstaculos = new Group();
+
   trex = createSprite(30,160,20,50);
   trex.addAnimation("running", trex_correndo); 
   trex.scale = 0.5;
 
   solo = createSprite(300,180,600,20);
-  solo.velocityX = -4
+ 
   solo.addImage("ground",imagensolo);
   solo.x = solo.width/2;
   
@@ -39,25 +46,40 @@ function setup(){
 }
 
 function draw(){
-  background(180);
+  background(83);
 
   text("SCORE:" +score,500,50);
-  score=score+Math.round(frameCount/120);
 
-  if(keyDown("space") && trex.y >160){
-    trex.velocityY = -12;
-  }
-  if (solo.x<0){
-    solo.x = solo.width/2;
-  }
 
-  trex.velocityY = trex.velocityY+0.5;
+  if (estadodejogo === JOGAR){
+    solo.velocityX = -4;
+
+    score=score+Math.round(frameCount/120);
+
+    if(keyDown("space") && trex.y >160){
+     trex.velocityY = -12;}
+    
+     if (solo.x<0){
+      solo.x = solo.width/2;}
+    
+     trex.velocityY = trex.velocityY+0.5;
+
+     gerarNuvens(); 
+
+     gerarobstaculos();
+
+     if (grupodeobstaculos.isTouching(trex)){
+       estadodejogo = ENCERRAR;
+     }
+  }
+  else if (estadodejogo === ENCERRAR){
+    solo.velocityX = 0;
+
+    grupodenuvens.setVelocityXEach (0);
+    grupodeobstaculos.setVelocityXEach (0);
+  }
 
   trex.collide(solo2);
-
-  gerarNuvens();
-
-  gerarobstaculos();
 
   drawSprites();
 }
@@ -73,6 +95,7 @@ nuvens.y = random(10,60);
 nuvens.depth = trex.depth;
 trex.depth = trex.depth +1;
 nuvens.lifetime = 225;
+grupodenuvens.add(nuvens);
 }
 }
 
@@ -99,5 +122,6 @@ switch (sorteio){
 }
 obstaculo.scale = 0.5;
 obstaculo.lifetime = 225;
+grupodeobstaculos.add(obstaculo);
 }
 }
