@@ -31,12 +31,12 @@ function preload(){
 }
 
 function setup(){
-  createCanvas(600,200)
+  createCanvas(windowWidth,windowHeight);
   
   grupodenuvens = new Group();
   grupodeobstaculos = new Group();
 
-  trex = createSprite(30,160,20,50);
+  trex = createSprite(30,height-70,20,50);
   trex.addAnimation("running", trex_correndo);
   trex.addAnimation("colisão",trex_colidido);
   trex.scale = 0.5;
@@ -44,23 +44,23 @@ function setup(){
   //trex.debug =  true
   
 
-  solo = createSprite(300,180,600,20);
+  solo = createSprite(width/2,height-20,width,20);
  
   solo.addImage("ground",imagensolo);
   solo.x = solo.width/2;
   
-  solo2 = createSprite(300,190,600,10);
+  solo2 = createSprite(width/2,height-10,width,10);
   solo2.visible = false;
 
   var rand = Math.round(random(10,60));
 
-  gameover = createSprite(300,100);
+  gameover = createSprite(width/2,height/2);
   gameover.addImage("fim_de_jogo",gameoverpng);
-  gameover.scale = 0.50
+  gameover.scale = 1
   
-  restart = createSprite(300,140);
+  restart = createSprite(width/2,height/2+50);
   restart.addImage("recomeçar",restartpng);
-  restart.scale = 0.50
+  restart.scale = 1
 
 
 
@@ -69,8 +69,8 @@ function setup(){
 
 function draw(){
   background(255);
-
-  text("SCORE:" +score,500,50);
+  textSize(20)
+  text("SCORE:" +score,width-200,30);
   console.log("isto é"+estadodejogo)
 
   if (estadodejogo === JOGAR){
@@ -83,7 +83,7 @@ function draw(){
       pontos.play();
     }
 
-    if(keyDown("space") && trex.y >160){
+    if(touches.length>0 || keyDown("space") && trex.y >height-70){
      trex.velocityY = -12;
       pulo.play();
     }
@@ -146,21 +146,21 @@ trex.changeAnimation("running",trex_correndo);
 function gerarNuvens(){
   //código para gerar as nuvens
 if (frameCount%60===0){
-  nuvens = createSprite(600,100,10.40);
+  nuvens = createSprite(width+20,height-300,10.40);
 nuvens.velocityX = -(3+score/1000)
 nuvens.addImage(nuvens2);
 nuvens.scale =0.75;
-nuvens.y = random(10,60);
+nuvens.y = random(10,height/2);
 nuvens.depth = trex.depth;
 trex.depth = trex.depth +1;
-nuvens.lifetime = 225;
+nuvens.lifetime = width+15;
 grupodenuvens.add(nuvens);
 }
 }
 
 function gerarobstaculos(){
 if (frameCount%80===0){
-obstaculo = createSprite(600,165,10,40);
+obstaculo = createSprite(width,height-40,10,40);
 obstaculo.velocityX = -(8+score/100)
 
 var sorteio =Math.round(random(1,6));
@@ -180,7 +180,7 @@ switch (sorteio){
   default: break;
 }
 obstaculo.scale = 0.5;
-obstaculo.lifetime = 225;
+obstaculo.lifetime = width+15;
 grupodeobstaculos.add(obstaculo);
 }
 }
