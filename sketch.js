@@ -27,7 +27,7 @@ function preload(){
   obstaculo6 =loadImage ("obstacle6.png");
   pulo = loadSound ("jump.mp3");
   morte = loadSound ("die.mp3");
-  pontos = loadSound ("checkpoint.mp3");
+  pontos = loadSound ("checkPoint.mp3");
 }
 
 function setup(){
