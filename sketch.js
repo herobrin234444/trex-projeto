@@ -86,6 +86,7 @@ function draw(){
     if(touches.length>0 || keyDown("space") && trex.y >height-70){
      trex.velocityY = -12;
       pulo.play();
+      touches = [];
     }
      
      if (solo.x<0){
@@ -117,10 +118,10 @@ function draw(){
     grupodenuvens.setVelocityXEach (0);
     grupodeobstaculos.setVelocityXEach (0);
 
-    if (mousePressedOver(restart)){
+    if (touches.length>0 || mousePressedOver(restart)){
       console.log("reiniciar jogo")
       reset();
-  
+      touches = [];
     }
   }
 
